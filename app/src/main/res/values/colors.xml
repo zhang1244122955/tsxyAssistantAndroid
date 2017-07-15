@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="black">#232325</color>
+    <color name="white">#ffffff</color>
+    <color name="windows_color">#F5F5F5</color>
+    <color name="black2">#ffeeeeee</color>
+    <color name="greeny">#00CB0D</color>
+    <color name="blue">#1296db</color>
+    <color name="cblue">#87CEFA</color>
+    <color name="gray">#9A9A9A</color>
+
+    <color name="content_color">#666666</color>
+    <color name="white_normal">#ffffffff</color>
+    <color name="login_button_background">#1296db</color>
+
+    <color name="shadow_start">#80000000</color>
+    <color name="shadow_end">#00000000</color>
+</resources>
