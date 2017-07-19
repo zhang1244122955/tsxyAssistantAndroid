@@ -73,7 +73,6 @@ public class Utils {
 		SharedPreferences sp = context.getSharedPreferences("StuInfo",Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = sp.edit();
 		editor.putString("userpwd","");
-		editor.putString("studentcode","");
 		editor.putInt("id", 0);
 		editor.putString("username", "");
 		editor.putString("url", "");

@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,7 +29,9 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+import static android.R.id.edit;
 import static android.widget.Toast.LENGTH_SHORT;
+import static com.example.administrator.first.R.id.cb_ischeck;
 
 public class LoginActivity extends Activity {
 
@@ -40,6 +43,7 @@ public class LoginActivity extends Activity {
 	private OkHttpClient mOkHttpClient;
 	private SharedPreferences sp;
 	private ProgressDialog progressDialog;
+	private CheckBox cb_ischeck;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -55,7 +59,7 @@ public class LoginActivity extends Activity {
 		btn_login = (Button) findViewById(R.id.btn_login);
 		et_name = (EditText) findViewById(R.id.et_usertel);
 		et_pwd = (EditText) findViewById(R.id.et_password);
-
+		cb_ischeck = (CheckBox)findViewById(R.id.cb_ischeck);
 		//初始化对话框
 		initProgressDialog();
 
@@ -73,12 +77,34 @@ public class LoginActivity extends Activity {
 		//Context.MODE_WORLD_WRITEABLE：指定该SharedPreferences数据能被其他应用程序读写。
 		sp = this.getSharedPreferences("StuInfo", Context.MODE_PRIVATE);
 
+		String name=sp.getString("studentcode", "");
+		String pwd=sp.getString("studentpwd", "");
+		boolean check=sp.getBoolean("check", false);
+
+		//把name 和 pwd显示到edittext控件上
+		et_name.setText(name);
+		et_pwd.setText(pwd);
+		cb_ischeck.setChecked(check);
+
+		boolean Sign2 = et_name.getText().length() > 0;
+		boolean Sign3 = et_pwd.getText().length() > 6;
+		if (Sign2 & Sign3) {
+			btn_login.setBackgroundDrawable(getResources().getDrawable(
+					R.drawable.btn_bg_green));
+			btn_login.setEnabled(true);
+		} else {
+			btn_login.setBackgroundDrawable(getResources().getDrawable(
+					R.drawable.btn_enable_green));
+			btn_login.setTextColor(0xFFD0EFC6);
+			btn_login.setEnabled(false);
+		}
+
 		et_name.addTextChangedListener(new TextWatcher() {
 
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
 				// TODO Auto-generated method stub
-				boolean Sign2 = et_name.getText().length() > 10;
+				boolean Sign2 = et_name.getText().length() > 0;
 				boolean Sign3 = et_pwd.getText().length() > 6;
 				if (Sign2 & Sign3) {
 					btn_login.setBackgroundDrawable(getResources().getDrawable(
@@ -198,6 +224,13 @@ public class LoginActivity extends Activity {
 							editor.putInt("week",0);
 							editor.putString("userpwd",credential);
 							editor.putString("studentcode",name);
+							if (cb_ischeck.isChecked()){
+								editor.putString("studentpwd",pwd);
+								editor.putBoolean("check", true);
+							}else{
+								editor.putString("studentpwd","");
+								editor.putBoolean("check", false);
+							}
 							editor.putInt("id", informationBean.getId());
 							editor.putString("username", informationBean.getUesrname());
 							editor.putString("url", informationBean.getUrl());
