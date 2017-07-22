@@ -1,12 +1,13 @@
 package com.example.administrator.first;
 
-import static android.view.View.MeasureSpec.EXACTLY;
-import static android.view.View.MeasureSpec.makeMeasureSpec;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+
+import static android.view.View.MeasureSpec.EXACTLY;
+import static android.view.View.MeasureSpec.makeMeasureSpec;
 
 
 
@@ -35,7 +36,7 @@ public class MyGridLayout extends ViewGroup {
 		if (attrs != null) {
 			TypedArray a = getContext().obtainStyledAttributes(attrs,
 					R.styleable.MyGridLayout);
-			colums = a.getInteger(R.styleable.MyGridLayout_numColumns, 2);
+			colums = a.getInteger(R.styleable.MyGridLayout_numColumns,2);
 			margin = (int) a.getInteger(R.styleable.MyGridLayout_itemMargin, 2);
 		}
 	}
@@ -95,7 +96,9 @@ public class MyGridLayout extends ViewGroup {
 		if (count == 0)
 			return;
 		int gridW = (width - margin * (colums - 1)) / colums;// 鏍煎瓙瀹藉害
-		int gridH = (height - margin * rows) / rows;// 鏍煎瓙楂樺害
+
+		int gridH = gridW;
+		//int gridH = (height - margin * rows) / rows;// 鏍煎瓙楂樺害
 
 		int left = 0;
 		int top = margin;

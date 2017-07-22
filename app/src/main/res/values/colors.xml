@@ -18,4 +18,6 @@
 
     <color name="shadow_start">#80000000</color>
     <color name="shadow_end">#00000000</color>
+
+    <color name="line">#ffd3dde6</color>
 </resources>

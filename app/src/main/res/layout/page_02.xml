@@ -7,13 +7,11 @@
 
     <com.example.administrator.first.MyGridLayout
         android:id="@+id/list"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:background="@color/cblue"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        app:itemMargin="1"
-        app:numColumns="2" >
+        app:itemMargin="0"
+        app:numColumns="3" >
     </com.example.administrator.first.MyGridLayout>
-
 
 </RelativeLayout>
