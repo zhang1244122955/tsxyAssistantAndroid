@@ -12,6 +12,7 @@
         android:layout_weight="1"
         android:gravity="center_vertical|left"
         android:paddingLeft="10dip"
+        android:ellipsize="end"
         android:maxLines="1" />
 
     <View
