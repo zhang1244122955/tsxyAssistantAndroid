@@ -5,13 +5,9 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.example.administrator.first.MyGridLayout
-        android:id="@+id/list"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:itemMargin="0"
-        app:numColumns="3" >
-    </com.example.administrator.first.MyGridLayout>
+        android:layout_height="match_parent"/>
 
 </RelativeLayout>
