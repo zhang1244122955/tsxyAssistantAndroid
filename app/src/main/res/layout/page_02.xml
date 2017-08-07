@@ -8,6 +8,16 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
+        android:layout_height="match_parent"
+    />
+    <Button
+        android:id="@+id/btn_finish"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignBottom="@+id/recycle"
+        android:background="@drawable/btn_enable_green"
+        android:text="编辑完成"
+        android:textColor="@android:color/white"
+        android:textSize="18sp" />
 </RelativeLayout>
