@@ -1,20 +1,5 @@
 package com.example.administrator.achievement;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.example.administrator.JsonBean.AchievementBean;
-import com.example.administrator.JsonBean.Scores;
-import com.example.administrator.first.R;
-import com.example.administrator.first.SpinerPopWindow;
-import com.google.gson.Gson;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -28,13 +13,21 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.example.administrator.JsonBean.AchievementBean;
+import com.example.administrator.JsonBean.Scores;
+import com.example.administrator.first.R;
+import com.example.administrator.first.SpinerPopWindow;
+import com.google.gson.Gson;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-
-import static android.content.ContentValues.TAG;
 
 public class FamilyTable extends Activity {
 
@@ -102,6 +95,7 @@ public class FamilyTable extends Activity {
 			achievement = getAchiecementBean();
 		}
 
+		Log.e("abc123", "onCreate: "+achievement.toString() );
 //		Log.e("abc123",achievement.toString() );
 		dataList = getDataList(achievement);
 		mSpinerPopWindow = new SpinerPopWindow<String>(this, dataList,itemClickListener);
@@ -141,22 +135,11 @@ public class FamilyTable extends Activity {
 	//获取成绩jsonBean
 	public AchievementBean getAchiecementBean(){
 		String Json = "";
-		File file = new File(FamilyTable.this.getFilesDir(),"achiecement.txt");
-		try
-		{
-			BufferedReader in = new BufferedReader(new FileReader(file));
-			String str;
-			while ((str = in.readLine()) != null)
-			{
-				System.out.println(str);
-				Json += str;
-			}
-			in.close();
-		}
-		catch (IOException e)
-		{
-			e.getStackTrace();
-		}
+		SharedPreferences sp = getSharedPreferences("achievement",Context.MODE_PRIVATE);
+		Json = sp.getString("achievement","");
+//		while(Json == null){
+//			Json = sp.getString("date","");
+//		}
 		Gson gson = new Gson();
 		AchievementBean achievementBean = gson.fromJson(Json,AchievementBean.class);
 		return achievementBean;
@@ -164,14 +147,16 @@ public class FamilyTable extends Activity {
 
 	//存储成绩json
 	public void saveAchiecementJson(final Context context){
+		SharedPreferences sp = context.getSharedPreferences("achievement",Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = sp.edit();
+		editor.putString("achievement","");
+		editor.commit();
 
-		SharedPreferences sp = context.getSharedPreferences("StuInfo",Context.MODE_PRIVATE);
+		sp = context.getSharedPreferences("StuInfo",Context.MODE_PRIVATE);
 		OkHttpClient mOkHttpClient = new OkHttpClient();
 
 		final String credential = sp.getString("userpwd","");
-		File filedelete = new File(context.getFilesDir(),"achiecement.txt");
-		filedelete.delete();
-		final File file = new File(context.getFilesDir(),"achiecement.txt");
+
 		Request.Builder requestBuilder = new Request.Builder()
 				.url("https://lidengming.com:2345/api/v1.0/score?score_type=all")
 				.header("Authorization", credential);
@@ -190,15 +175,11 @@ public class FamilyTable extends Activity {
 				int code = response.code();
 				switch (code){
 					case 200:
-						final InputStream in = response.body().byteStream();
-						FileOutputStream fos = new FileOutputStream(file);
-						int len = -1;
-						byte[] buffer = new byte[1024];// 1kb
-						while ((len = in.read(buffer)) != -1) {
-							fos.write(buffer, 0, len);
-						}
-						fos.close();
-						in.close();
+						String date = response.body().string();
+						SharedPreferences sp = context.getSharedPreferences("achievement",Context.MODE_PRIVATE);
+						SharedPreferences.Editor editor = sp.edit();
+						editor.putString("achievement",date);
+						editor.commit();
 						break;
 					case 401:;
 						break;
@@ -332,19 +313,19 @@ public class FamilyTable extends Activity {
 			switch (getItemViewType(row, column)) {
 				case 0:
 					view = getFirstHeader(row, column, convertView, parent);
-				break;
+					break;
 				case 1:
 					view = getHeader(row, column, convertView, parent);
-				break;
+					break;
 				case 2:
 					view = getFirstBody(row, column, convertView, parent);
-				break;
+					break;
 				case 3:
 					view = getBody(row, column, convertView, parent);
-				break;
+					break;
 				case 4:
 					view = getFamilyView(row, column, convertView, parent);
-				break;
+					break;
 				default:
 					throw new RuntimeException("wtf?");
 			}
