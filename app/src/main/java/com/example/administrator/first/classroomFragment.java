@@ -15,7 +15,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.administrator.achievement.FamilyTable;
+import com.example.administrator.Classroom.Achievement.FamilyTable;
+import com.example.administrator.Classroom.AddCurriculum.AddCurriculumActivity;
 import com.example.administrator.drag.DragItemCallBack;
 import com.example.administrator.drag.RecycleCallBack;
 
@@ -84,6 +85,9 @@ public class classroomFragment extends Fragment implements RecycleCallBack {
                 case 0:
                     //先判断是否有网络
                     if(NetWorkUtils.isNetworkConnected(getActivity())){
+                        //跳转界面
+                        Intent intent = new Intent(getActivity(), AddCurriculumActivity.class);
+                        getActivity().startActivity(intent);
                         Toast.makeText(getActivity(),"敬请期待",Toast.LENGTH_SHORT).show();
                     }else {
                         Toast.makeText(getActivity(),"网络未连接，请检查设置",Toast.LENGTH_SHORT).show();

@@ -8,6 +8,8 @@ package com.example.administrator.JsonBean;
 
 public class InformationBean {
     private int id;
+    private int permissions;
+    private String role;
     private String uesrname;
     private String url;
     private String School_code;
@@ -18,12 +20,30 @@ public class InformationBean {
     public String toString() {
         return "InformationBean{" +
                 "id=" + id +
+                ", permissions=" + permissions +
+                ", role='" + role + '\'' +
                 ", uesrname='" + uesrname + '\'' +
                 ", url='" + url + '\'' +
                 ", School_code='" + School_code + '\'' +
                 ", member_since='" + member_since + '\'' +
                 ", last_seen='" + last_seen + '\'' +
                 '}';
+    }
+
+    public int getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(int permissions) {
+        this.permissions = permissions;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public int getId() {

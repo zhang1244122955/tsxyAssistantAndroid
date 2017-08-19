@@ -94,7 +94,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener{
 
         if(Utils.isLogin(this)){
             InformationBean informationBean = Utils.getstuinfo(this);
-            tv_stuinfo.setText(informationBean.getSchool_code());
+            tv_stuinfo.setText(informationBean.getRole());
             tv_cancellation.setText("注销");
 
 

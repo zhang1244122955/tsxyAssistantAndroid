@@ -1,6 +1,7 @@
-package com.example.administrator.achievement;
+package com.example.administrator.Classroom.Achievement;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
@@ -10,7 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.JsonBean.AchievementBean;
@@ -40,6 +43,13 @@ public class FamilyTable extends Activity {
 	private TableFixHeaders tableFixHeaders;
 	private ImageView img_back;
 	private ImageView iv_icon;
+	private RelativeLayout rl_refresh;
+	private LinearLayout ll_score;
+	private String json;
+	private ProgressDialog progressDialog;
+    private LinearLayout ll_true;
+    private LinearLayout ll_false;
+    private TextView tv_false;
 
 	private class NexusTypes {
 		private final String name;
@@ -87,25 +97,56 @@ public class FamilyTable extends Activity {
 		iv_icon = (ImageView) findViewById(R.id.iv_icon);
 		img_back.setVisibility(View.VISIBLE);
 		iv_icon.setVisibility(View.GONE);
+        ll_true = (LinearLayout)findViewById(R.id.ll_true);
+        ll_false = (LinearLayout)findViewById(R.id.ll_false);
+        tv_false = (TextView)findViewById(R.id.tv_false);
 
-		saveAchiecementJson(this);
-		//不能立即存储
-		achievement = getAchiecementBean();
-		while (achievement == null){
-			achievement = getAchiecementBean();
-		}
+		//初始化对话框
+		initProgressDialog();
+		//显示对话框
+		Log.e("asd123", "click_getInfo:0 ");
+		progressDialog.show();
 
-		Log.e("abc123", "onCreate: "+achievement.toString() );
-//		Log.e("abc123",achievement.toString() );
-		dataList = getDataList(achievement);
-		mSpinerPopWindow = new SpinerPopWindow<String>(this, dataList,itemClickListener);
-		mSpinerPopWindow.setOnDismissListener(dismissListener);
+		new Thread(){
+			public void run(){
+                json = "";
+                getJson(FamilyTable.this);
+                while(json.equals("")){
 
-		tv_choice.setText(dataList.get(dataList.size()-1));
-		scores = getScoresList(achievement,dataList.get(dataList.size()-1));
-		BaseTableAdapter baseTableAdapter = new FamilyNexusAdapter(FamilyTable.this,scores);
-		tableFixHeaders.setAdapter(baseTableAdapter);
+                }
+                //判断是否服务器出现问题
+                if (json.equals("error")){
+                    runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ll_true.setVisibility(View.GONE);
+                        ll_false.setVisibility(View.VISIBLE);
+                        //隐藏对话框
+                        progressDialog.dismiss();
+                    }
+                });
+                }else{
+                    final Gson gson = new Gson();
+                    final AchievementBean achievementBean = gson.fromJson(json,AchievementBean.class);
+                    achievement = achievementBean;
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            dataList = getDataList(achievement);
+                            mSpinerPopWindow = new SpinerPopWindow<String>(getApplicationContext(), dataList,itemClickListener);
+                            mSpinerPopWindow.setOnDismissListener(dismissListener);
 
+                            tv_choice.setText(dataList.get(dataList.size()-1));
+                            scores = getScoresList(achievement,dataList.get(dataList.size()-1));
+                            BaseTableAdapter baseTableAdapter = new FamilyNexusAdapter(FamilyTable.this,scores);
+                            tableFixHeaders.setAdapter(baseTableAdapter);
+                            //隐藏对话框
+                            progressDialog.dismiss();
+                        }
+                    });
+                }
+			}
+		}.start();
 		img_back.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -114,51 +155,15 @@ public class FamilyTable extends Activity {
 		});
 	}
 
-	//获取成绩list
-	public List<Scores> getScoresList(AchievementBean achievementBean,String str){
-		List<Scores> scoresList = new ArrayList<>();
-		for (int i = 0; i < achievement.getScore_tables().size(); i++) {
-			if(achievementBean.getScore_tables().get(i).getSemester().equals(str)) {
-				scoresList = achievementBean.getScore_tables().get(i).getScores();
-			}
-		}
-		return scoresList;
-	}
-	public List<String> getDataList(AchievementBean achievementBean){
-		List<String> data = new ArrayList<>();
-		for (int i = 0; i < achievement.getScore_tables().size(); i++) {
-			data.add(achievementBean.getScore_tables().get(i).getSemester());
-		}
-		return data;
-	}
+	//读取json
+	public void getJson(final Context context){
 
-	//获取成绩jsonBean
-	public AchievementBean getAchiecementBean(){
-		String Json = "";
-		SharedPreferences sp = getSharedPreferences("achievement",Context.MODE_PRIVATE);
-		Json = sp.getString("achievement","");
-//		while(Json == null){
-//			Json = sp.getString("date","");
-//		}
-		Gson gson = new Gson();
-		AchievementBean achievementBean = gson.fromJson(Json,AchievementBean.class);
-		return achievementBean;
-	}
-
-	//存储成绩json
-	public void saveAchiecementJson(final Context context){
-		SharedPreferences sp = context.getSharedPreferences("achievement",Context.MODE_PRIVATE);
-		SharedPreferences.Editor editor = sp.edit();
-		editor.putString("achievement","");
-		editor.commit();
-
-		sp = context.getSharedPreferences("StuInfo",Context.MODE_PRIVATE);
+		SharedPreferences sp = context.getSharedPreferences("StuInfo",Context.MODE_PRIVATE);
 		OkHttpClient mOkHttpClient = new OkHttpClient();
 
 		final String credential = sp.getString("userpwd","");
-
 		Request.Builder requestBuilder = new Request.Builder()
-				.url("https://lidengming.com:2345/api/v1.0/score?score_type=all")
+				.url(context.getString(R.string.url)+"/api/v1.0/score?score_type=all")
 				.header("Authorization", credential);
 		//可以省略，默认是GET请求
 		requestBuilder.method("GET",null);
@@ -175,21 +180,46 @@ public class FamilyTable extends Activity {
 				int code = response.code();
 				switch (code){
 					case 200:
-						String date = response.body().string();
-						SharedPreferences sp = context.getSharedPreferences("achievement",Context.MODE_PRIVATE);
-						SharedPreferences.Editor editor = sp.edit();
-						editor.putString("achievement",date);
-						editor.commit();
+						json = response.body().string();
 						break;
-					case 401:;
+					case 401:
+						//暂无课表
+						json = "error";
 						break;
 					default:
+						//暂无课表
+						json = "error";
 						break;
 
 				}
 			}
 		});
 
+	}
+
+	//获取成绩list
+	public List<Scores> getScoresList(AchievementBean achievementBean,String str){
+		List<Scores> scoresList = new ArrayList<>();
+		for (int i = 0; i < achievementBean.getScore_tables().size(); i++) {
+			if(achievementBean.getScore_tables().get(i).getSemester().equals(str)) {
+				scoresList = achievementBean.getScore_tables().get(i).getScores();
+			}
+		}
+		return scoresList;
+	}
+	public List<String> getDataList(AchievementBean achievementBean){
+		List<String> data = new ArrayList<String>();
+		for (int i = 0; i < achievementBean.getScore_tables().size(); i++) {
+			data.add(achievementBean.getScore_tables().get(i).getSemester());
+		}
+		return data;
+	}
+	private void initProgressDialog() {
+		progressDialog = new ProgressDialog(this);
+		progressDialog.setIndeterminate(false);//循环滚动
+		progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		progressDialog.setMessage("正在获取成绩，请稍后...");
+		progressDialog.setCancelable(true);//false不能取消显示，true可以取消显示
 	}
 
 

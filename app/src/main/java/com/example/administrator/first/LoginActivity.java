@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -29,9 +30,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import static android.R.id.edit;
 import static android.widget.Toast.LENGTH_SHORT;
-import static com.example.administrator.first.R.id.cb_ischeck;
 
 public class LoginActivity extends Activity {
 
@@ -189,9 +188,11 @@ public class LoginActivity extends Activity {
 			progressDialog.show();
 			mOkHttpClient = new OkHttpClient();
 
+			String path = getString(R.string.url)+"/api/v1.0/users/myself";
+			Log.e("asd123", "click_login: "+path);
 			final String credential = Credentials.basic(name, pwd);
 			Request.Builder requestBuilder = new Request.Builder()
-					.url("https://lidengming.com:2345/api/v1.0/users/myself")
+					.url(path)
 					.header("Authorization", credential);
 			//可以省略，默认是GET请求
 			requestBuilder.method("GET",null);
@@ -233,6 +234,8 @@ public class LoginActivity extends Activity {
 							}
 							editor.putInt("id", informationBean.getId());
 							editor.putString("username", informationBean.getUesrname());
+							editor.putString("role",informationBean.getRole());
+							editor.putInt("permissions",informationBean.getPermissions());
 							editor.putString("url", informationBean.getUrl());
 							editor.putString("school_code", informationBean.getSchool_code());
 							editor.putString("member_since",informationBean.getMember_since());

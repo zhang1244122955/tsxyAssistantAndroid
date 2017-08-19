@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:background="@drawable/edittext_login"
-                android:hint="您的学号"
+                android:hint="您的学号/工号"
                 android:inputType="none"
                 android:paddingLeft="90dp"
                 android:singleLine="true"

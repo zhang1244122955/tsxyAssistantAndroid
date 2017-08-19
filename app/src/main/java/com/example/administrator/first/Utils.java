@@ -1,13 +1,8 @@
 package com.example.administrator.first;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.example.administrator.JsonBean.Courses;
@@ -62,7 +57,7 @@ public class Utils {
 	public static InformationBean getstuinfo(Context context) {
 		SharedPreferences sp = context.getSharedPreferences("StuInfo",Context.MODE_PRIVATE);
 		InformationBean informationBean = new InformationBean();
-		informationBean.setMember_since(sp.getString("member_since",""));
+		informationBean.setRole(sp.getString("role",""));
 		return informationBean;
 
 	}
@@ -73,6 +68,8 @@ public class Utils {
 		SharedPreferences sp = context.getSharedPreferences("StuInfo",Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = sp.edit();
 		editor.putString("userpwd","");
+		editor.putInt("permissions",0);
+		editor.putString("role","");
 		editor.putInt("id", 0);
 		editor.putString("username", "");
 		editor.putString("url", "");
@@ -107,6 +104,8 @@ public class Utils {
 			}
 		return Json;
 	}
+
+
 
 	//获取学年学期
 	public static String getSys(){
@@ -143,7 +142,7 @@ public class Utils {
 	}
 
 	//读取json.txt转换为String
-	public static void savejson(final Context context, final String path){
+	public static void savejson(final Context context, final String path,String apipath){
 
 					final File file = new File(context.getCacheDir(),path);
 
@@ -152,7 +151,7 @@ public class Utils {
 
 					final String credential = sp.getString("userpwd","");
 					Request.Builder requestBuilder = new Request.Builder()
-							.url("https://lidengming.com:2345/api/v1.0/schedule/get-schedule")
+							.url(context.getString(R.string.url)+apipath)
 							.header("Authorization", credential);
 					//可以省略，默认是GET请求
 					requestBuilder.method("GET",null);

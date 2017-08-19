@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_title"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white">
+            <TextView
+                android:id="@+id/yea"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginLeft="20dp"
+                android:textSize="20dp"
+                android:text="课程"/>
+            <!--竖线-->
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/blue"
+                />
+
+            <EditText
+                android:id="@+id/et_curriculum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_centerVertical="true"
+                android:background="@drawable/edittext_login"
+                android:hint="填写课程名称"
+                android:textColorHint="@color/gray"
+                android:textSize="16sp"/>
+
+        </LinearLayout>
+        <!--分隔线-->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/blue"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white">
+            <TextView
+                android:id="@+id/ye"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginLeft="20dp"
+                android:textSize="20dp"
+                android:text="院系"/>
+            <!--竖线-->
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/blue"
+                />
+
+            <!--下拉方式选周数-->
+            <TextView
+                android:text="请选择院系"
+                android:id="@+id/tv_department"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/shape_help_category_tv_bg"
+                android:drawableRight="@drawable/icon_down"
+                android:padding="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:textColor="@color/gray"
+                android:textSize="16sp"/>
+
+        </LinearLayout>
+        <!--分隔线-->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/blue"/>
+    </LinearLayout>
+
+
+</LinearLayout>

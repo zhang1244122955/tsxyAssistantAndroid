@@ -8,39 +8,60 @@
     <include layout="@layout/layout_title"/>
 
 
-        <LinearLayout
+<LinearLayout
+    android:id="@+id/ll_true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:orientation="vertical">
+
+        <!--下拉方式选周数-->
+        <TextView
+            android:id="@+id/tv_choice"
+            android:gravity="center"
+            android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#ffffff"
-            android:orientation="vertical">
+            android:layout_weight="1"
+            android:background="@drawable/shape_help_category_tv_bg"
+            android:drawableRight="@drawable/icon_down"
+            android:padding="10dp"
+            android:textColor="@color/content_color"
+            android:textSize="20sp"/>
 
-            <!--下拉方式选周数-->
-            <TextView
-                android:id="@+id/tv_choice"
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/shape_help_category_tv_bg"
-                android:drawableRight="@drawable/icon_down"
-                android:padding="10dp"
-                android:textColor="@color/content_color"
-                android:textSize="20sp"/>
-
-        </LinearLayout>
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#ffffff"
         android:orientation="vertical">
 
-        <com.example.administrator.achievement.TableFixHeaders xmlns:android="http://schemas.android.com/apk/res/android"
+        <com.example.administrator.Classroom.Achievement.TableFixHeaders xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/table"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:scrollbars="horizontal|vertical" />
 
+    </LinearLayout>
+</LinearLayout>
+
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/ll_false"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/tv_false"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@color/gray"
+            android:text="服务器忙请稍后再试"
+            android:textSize="20dp" />
     </LinearLayout>
 
 </LinearLayout>

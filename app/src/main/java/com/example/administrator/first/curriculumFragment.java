@@ -57,13 +57,14 @@ public class curriculumFragment extends Fragment {
         sp = getActivity().getSharedPreferences("StuInfo",Context.MODE_PRIVATE);
         SharedPreferences sp = getActivity().getSharedPreferences("StuInfo", Context.MODE_PRIVATE);
         String code = Utils.getSys()+sp.getString("studentcode","")+".txt";
+        String apipath = "/api/v1.0/schedule/get-schedule";
         final File file = new File(getActivity().getCacheDir(),code);
         if (Utils.isLogin(getActivity())){
             //获取到json字符串
             if (file.exists() && file.length() > 0){
                 json = Utils.getJson(getActivity(),code);
             }else{
-                Utils.savejson(getActivity(),code);
+                Utils.savejson(getActivity(),code,apipath);
                 json = Utils.getJson(getActivity(),code);
                 //猜测是不能立即存储完毕
                 while (json.equals("")){
@@ -99,7 +100,7 @@ public class curriculumFragment extends Fragment {
 
             ll_logined.setVisibility(View.GONE);
             rl_gologin.setVisibility(View.VISIBLE);
-            tv_gologin.setText("暂无您的学生课表");
+            tv_gologin.setText("暂无您的课表");
             btn_gologin.setVisibility(View.GONE);
 
         }else if(!Utils.isLogin(getActivity())){

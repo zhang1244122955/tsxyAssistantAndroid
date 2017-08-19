@@ -1,12 +1,13 @@
 <resources>
     <string name="app_name">唐小二</string>
     <string name="curriculum">课表</string>
-    <string name="username">学号</string>
+    <string name="username">账号</string>
     <string name="password">密码</string>
     <string name="classroom">课堂</string>
     <string name="campus">校园</string>
     <string name="society">社会</string>
     <string name="family_adapter">Family adapter</string>
     <string name="action_settings">Settings</string>
+    <string name="url">https://bllli.cn:23456</string>
 
 </resources>
